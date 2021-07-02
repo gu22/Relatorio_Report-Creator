@@ -7,6 +7,7 @@ Created on Thu Jul  1 19:09:02 2021
 
 from fpdf import FPDF
 import easygui
+import math
 
 files = easygui.fileopenbox(multiple=True)
 
@@ -72,23 +73,31 @@ pdf.cell(50, p, 'Rachadura na contra verga -- sobre peso na laje -- novo pilar n
 
 
 #Imagens
+
+
 pdf.add_page()
 # pdf.ln(10)
 # pdf.cell(12)
 # p = pdf.get_y()+40
 pdf.set_font('Arial', 'B', 16)
-pdf.cell(50, p, 'Imagens')
+pdf.cell(50, 10, 'Imagens')
 
 x= 0
+p = 30
+
+test = len(files)
+
+play = math.ceil(test/2)
+
 for img in files:
     # p = pdf.get_y()+80
-    if x == 0:
-        p = pdf.get_y()+80
-        pdf.image(img,10,p,w=180,h=90)
-        pdf.ln(1)
-        x+=1
-    else:
-        pdf.image(img,10,(p+80),w=180,h=90)
+    
+    
+    pdf.image(img,10,p,w=180,h=90)
+    pdf.ln(1)
+    x+=1
+    p+=100
+    
         
 
 
