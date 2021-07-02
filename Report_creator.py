@@ -17,14 +17,16 @@ files = easygui.fileopenbox(multiple=True)
 H = 297
 W = 210
 
-itens = ('ID','N° Ordem','Unidade','Pavimento','Requisição')
-dados = ('00','1234','Santana','T','Trocar Janela quebrada')
+itens = ('ID','N° Ordem','Unidade','Pavimento','Requisição','')
+dados = ('00','1234','Santana','T','Trocar Janela quebrada','')
 
 
 
 ''' Configuração da pagina '''
 
 pdf= FPDF('P','mm','A4')
+# pdf.set_right_margin(10)
+# pdf.page_no()
 pdf.add_page()
 
 
@@ -79,7 +81,7 @@ es = pdf.get_x()+1
 p = pdf.get_y()+40
 pdf.set_font('Arial', 'B', 12)
 
-pdf.multi_cell(50, 210, 'Rachadura na contra verga -- sobre peso na laje -- novo pilar necessario',1)
+pdf.multi_cell(180, p, 'Rachadura na contra verga -- sobre peso na laje -- novo pilar necessario')
 
 
 
