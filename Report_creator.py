@@ -11,6 +11,9 @@ import math
 
 files = easygui.fileopenbox(multiple=True)
 
+
+
+
 H = 297
 W = 210
 
@@ -18,16 +21,19 @@ itens = ('ID','N° Ordem','Unidade','Pavimento','Requisição')
 dados = ('00','1234','Santana','T','Trocar Janela quebrada')
 
 
+
+''' Configuração da pagina '''
+
 pdf= FPDF('P','mm','A4')
 pdf.add_page()
 
 
-#Linha lateral
+''' Linha lateral'''
 pdf.set_line_width(5)
 pdf.set_draw_color(0,45,0)
 pdf.line(10, 10, 10, 290)
 
-#Header
+''' Header '''
 pdf.set_title('TEST')
 pdf.set_font('Arial', 'B', 20)
 pdf.cell(12)
@@ -38,7 +44,10 @@ pdf.set_draw_color(0,0,0)
 pdf.line(20, 19, 125, 19)
 
 c = 0
-#Informações
+
+
+'''Informações'''
+
 for inf in itens:
     pdf.set_font('Arial', 'B', 16)
     
@@ -69,10 +78,12 @@ pdf.cell(12)
 es = pdf.get_x()+1
 p = pdf.get_y()+40
 pdf.set_font('Arial', 'B', 12)
-pdf.cell(50, p, 'Rachadura na contra verga -- sobre peso na laje -- novo pilar necessario')
+
+pdf.multi_cell(50, 210, 'Rachadura na contra verga -- sobre peso na laje -- novo pilar necessario',1)
 
 
-#Imagens
+
+'''Imagens'''
 
 
 pdf.add_page()
@@ -82,7 +93,8 @@ pdf.add_page()
 pdf.set_font('Arial', 'B', 16)
 pdf.cell(50, 10, 'Imagens')
 
-x= 0
+x= 1
+cont = 1
 p = 30
 
 test = len(files)
@@ -91,15 +103,26 @@ play = math.ceil(test/2)
 
 for img in files:
     # p = pdf.get_y()+80
+    verificador = x%play
     
-    
-    pdf.image(img,10,p,w=180,h=90)
-    pdf.ln(1)
-    x+=1
-    p+=100
-    
+    if verificador == 0:
+        pdf.image(img,10,p,w=180,h=90)
+        pdf.ln(1)
+        x+=1
+        p+=100
+        if  cont != test:
+            print ('Break\n')
+            pdf.add_page()
+            p = pdf.get_y()+30
+            cont+=1
+    else:    
+        pdf.image(img,10,p,w=180,h=90)
+        pdf.ln(1)
+        x+=1
+        p+=100
+        cont+=1
+        # pdf.accept_page_break()
         
-
 
 
 
