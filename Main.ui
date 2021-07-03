@@ -222,7 +222,10 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QToolButton" name="toolButton">
+   <widget class="QToolButton" name="Bconfig">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>240</x>

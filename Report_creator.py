@@ -58,17 +58,28 @@ class Ui(QtWidgets.QMainWindow):
         self.Barimagens.setValue(0)
         
         
+        
         self.Bdados.clicked.connect(self.open_dados)
         self.Bimagens.clicked.connect(self.open_imagens)
         self.Bemissao.clicked.connect(self.r_emissao)
         
         self.menuConfig.triggered.connect(self.pp)
         
+        self.Snao.clicked.connect(self.range_impressao_nao)
+        
+        
+        
         self.show()
         
         
 
-
+    def range_impressao_nao(self):
+        self.Tlinha.setEnabled(True)
+        self.Tlinha.setFocus()
+        
+    def range_impressao_sim(self):
+        self.Tlinha.setEnabled(False)
+        
 
     def pp(self):
         # print ('OK')
@@ -88,13 +99,21 @@ class Ui(QtWidgets.QMainWindow):
         global files
         
         files = easygui.fileopenbox(multiple=True)
-        self.Status_imagens.setText('Imagens OK ')
-        self.Barimagens.setValue(100)
+        if files:
+            self.Status_imagens.setText('Imagens OK ')
+            self.Barimagens.setValue(100)
+        else:
+            self.Status_imagens.setText('Sem Arquivo ')
+            
         
 
 
     def r_emissao(self):
-        global files , base_open,r,g,b,H_logo,W_logo,titulo, subtitulo, subtitulo_2n
+        global files , base_open,r,g,b,H_logo,W_logo,titulo, subtitulo, subtitulo_2n,list_range
+        
+                
+            
+        
         
         ''' GUI para leitura de arquivo '''
         
@@ -129,7 +148,23 @@ class Ui(QtWidgets.QMainWindow):
         
         
         
+        '''Tratando entrada do usuario sobre emissao'''
         
+        list_range = []
+        input_user = self.Tlinha.text()
+        if self.Tlinha.isEnabled():
+            if '-' in input_user:
+                input_user = (input_user).split('-')
+                input_user = [(int(x)-2) for x in input_user]
+                list_range = [int(x) for x in range(input_user[0],(input_user[1])+1)]
+            elif ';' in input_user: 
+                input_user = (input_user).split('-')
+                list_range = [(int(x)-2) for x in input_user]
+        else:
+            
+        
+        
+        '
         obs = 'Teste'
         
         
