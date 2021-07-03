@@ -8,21 +8,52 @@ Created on Thu Jul  1 19:09:02 2021
 from fpdf import FPDF
 import easygui
 import math
+import pandas as pd
+from unidecode import unidecode
 
+''' GUI para leitura de arquivo '''
 files = easygui.fileopenbox(multiple=True)
 
+base_open = easygui.fileopenbox()
 
 
 
-H = 297
-W = 210
+'''Leitura dos Arquivos'''
 
 itens = ('ID','N° Ordem','Unidade','Pavimento','Requisição','')
 dados = ('00','1234','Santana','T','Trocar Janela quebrada','')
 
+base = pd.read_excel(base_open,engine='openpyxl')
+head_file = list(base)
+
+index  = len(base.index)
+itens = head_file
+dados = []
+
+# for i in range(index)
+
+for i in range(len(itens)):
+    if  head_file[i] == ('Observações'):
+        obs = (str(base.iloc[0][i]))
+        itens.remove('Observações')
+    elif head_file[i] == ('N°  Ordem'):
+        name_file = (str(base.iloc[0][i]))
+        dados.append(str(base.iloc[0][i]))
+    else:
+        dados.append(str(base.iloc[0][i]))
+
+
+
+
+
+
+
 
 
 ''' Configuração da pagina '''
+
+H = 297
+W = 210
 
 pdf= FPDF('P','mm','A4')
 # pdf.set_right_margin(10)
@@ -97,7 +128,7 @@ es = pdf.get_x()+1
 p = pdf.get_y()+2
 pdf.set_font('Arial', 'I', 12)
 
-pdf.multi_cell(180, 10, 'Rachadura na contra verga -- sobre peso na laje -- novo pilar necessario -xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+pdf.multi_cell(180, 10, f'{obs}')
 footer(pdf)
 
 
@@ -146,4 +177,4 @@ for img in files:
 footer(pdf)
 
 
-pdf.output('tuto2.pdf', 'F')
+pdf.output(f'{name_file}.pdf', 'F')
