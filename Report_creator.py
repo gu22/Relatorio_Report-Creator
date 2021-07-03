@@ -56,7 +56,7 @@ H = 297
 W = 210
 
 pdf= FPDF('P','mm','A4')
-# pdf.set_right_margin(10)
+pdf.set_right_margin(10)
 # pdf.page_no()
 pdf.alias_nb_pages()
 pdf.set_auto_page_break(True,10)
@@ -72,11 +72,24 @@ pdf.line(10, 50, 10, 290)
 ''' Header '''
 pdf.image(files[0],5,10,w=25,h=20)
 
-pdf.set_title('TEST')
+pdf.set_title('Report')
 pdf.set_font('Arial', 'B', 20)
 pdf.cell(50)
-pdf.cell(50, 10, 'Relatório - Ordem de Serviço')
-pdf.ln(15)
+pdf.cell(50, 5, 'Relatório - Ordem de Serviço',ln=True)
+pdf.cell(55)
+pdf.set_font('Arial', 'B', 18)
+pdf.cell(50, 12, 'Relatório - Ordem de Serviço',ln=True)
+pdf.cell(60)
+
+pdf.set_font('Arial', 'B', 16)
+pdf.cell(50, 12, 'Relatório - Ordem de Serviço')
+
+pdf.ln(7)
+pdf.set_font('helvetica', 'I', 14)
+pdf.cell(150)
+pdf.cell(10, 12, 'N° ')
+pdf.cell(50, 12, 'xxxx-xxx-xx ')
+pdf.ln(-3)
 # pdf.set_line_width(1)
 # pdf.set_draw_color(0,0,0)
 # pdf.line(20, 19, 125, 19)
@@ -92,10 +105,38 @@ def footer(self):
         self.set_font('helvetica', 'I', 8)
         # Page number
         self.cell(0, 0, 'Página ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
+        self.ln(5)
+        self.cell(0, 0, 'BBXYBXYUBXYBXYUBXU',0,0,'C')
 
-pdf.cell(0,)
+# pdf.cell(0,)
 
 '''Informações'''
+
+
+#INFORMAÇÕES INICIAIS
+
+pdf.set_font('Arial', 'B', 16)
+p = pdf.get_y()+10
+pdf.cell(12)
+pdf.cell(50, p, f'Unidade R: ')
+
+es = pdf.get_x()+3
+pdf.set_font('Arial', 'I', 12)
+pdf.cell(55, p, 'TETSTSTS')
+
+es = pdf.get_x()+10
+pdf.set_font('Arial', 'B', 16)
+pdf.cell(40, p, 'Data: ')
+
+es = pdf.get_x()-20
+pdf.set_font('Arial', 'I', 12)
+pdf.cell(0, p, '20212021')
+
+
+pdf.ln(10)
+
+
+
 
 for inf in itens:
     pdf.set_font('Arial', 'B', 16)
@@ -138,10 +179,14 @@ footer(pdf)
 
 
 pdf.add_page()
+pdf.image(files[0],5,10,w=25,h=20)
+
+
 # pdf.ln(10)
 # pdf.cell(12)
 # p = pdf.get_y()+40
 pdf.set_font('Arial', 'B', 16)
+pdf.cell(20)
 pdf.cell(50, 10, 'Imagens')
 
 x= 1
