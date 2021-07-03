@@ -16,17 +16,39 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 import sys
 import os
 
+import configparser
 
 
+config = configparser.ConfigParser()
+config.read('Config.ini')
+design = config['design']
+default = config['DEFAULT']
 
+
+rgb = (design['Cor_linhalateral']).split(',')
+rgb = [int(x)for x in rgb]
+r,g,b = rgb[0],rgb[1],rgb[2]
+
+H_logo = int(design['Logo_altura'])
+W_logo = int(design['Logo_comprimento'])
+
+titulo = (default['Titulo'])
+subtitulo = (default['Subtitulo'])
+subtitulo_2n = (default['Subnivel_2'])
 
 
 '''GUI Otimizada para  Usuario'''
 
 class Ui(QtWidgets.QMainWindow):
+    
+    ''' Variaveis Globais '''
+    #titulo, subtitulo, subtitulo_2n,r,g,b,base_open,files,H_logo,W_logo
+    
     def __init__(self):
         super(Ui, self).__init__()
         uic.loadUi('Main.ui', self)
+        
+        self.setFixedSize(316, 357)
         
         self.Status_dados.setText('')
         self.Status_imagens.setText('')
@@ -72,7 +94,7 @@ class Ui(QtWidgets.QMainWindow):
 
 
     def r_emissao(self):
-        global files , base_open
+        global files , base_open,r,g,b,H_logo,W_logo,titulo, subtitulo, subtitulo_2n
         
         ''' GUI para leitura de arquivo '''
         
@@ -128,23 +150,23 @@ class Ui(QtWidgets.QMainWindow):
         
         ''' Linha lateral'''
         pdf.set_line_width(5)
-        pdf.set_draw_color(0,45,0)
+        pdf.set_draw_color(r,g,b)
         pdf.line(10, 50, 10, 290)
         
         ''' Header '''
-        pdf.image(files[0],5,10,w=25,h=20)
+        pdf.image(files[0],5,10,w=W_logo,h=H_logo)
         
         pdf.set_title('Report')
         pdf.set_font('Arial', 'B', 20)
         # pdf.cell(50)
-        pdf.cell(0, 8, 'Relatório - Ordem de Serviço',ln=True,align="C")
+        pdf.cell(0, 8, titulo,ln=True,align="C")
         # pdf.cell(55)
         pdf.set_font('Arial', 'B', 18)
-        pdf.cell(0, 8, 'Relatório - Ordem de Serviço',ln=True,align="C")
+        pdf.cell(0, 8, subtitulo,ln=True,align="C")
         # pdf.cell(60)
         pdf.ln(7)
         pdf.set_font('Arial', 'B', 16)
-        pdf.cell(0, 0, 'Relatório - Ordem de Serviço',align="C")
+        pdf.cell(0, 0, subtitulo_2n,align="C")
         
         pdf.ln(5)
         pdf.set_font('courier', 'I', 14)
@@ -176,11 +198,10 @@ class Ui(QtWidgets.QMainWindow):
         
         
         #INFORMAÇÕES INICIAIS
-        
         pdf.set_font('Arial', 'B', 16)
         p = pdf.get_y()+10
         pdf.cell(12)
-        pdf.cell(50, p, f'Unidade R: ')
+        pdf.cell(50, p, f'Unidade Requisitante: ',1)
         
         es = pdf.get_x()+3
         pdf.set_font('Arial', 'I', 12)
@@ -241,7 +262,7 @@ class Ui(QtWidgets.QMainWindow):
         
         
         pdf.add_page()
-        pdf.image(files[0],5,10,w=25,h=20)
+        pdf.image(files[0],5,10,w=W_logo,h=H_logo)
         
         
         # pdf.ln(10)
