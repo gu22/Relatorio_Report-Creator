@@ -14,7 +14,7 @@ from unidecode import unidecode
 ''' GUI para leitura de arquivo '''
 files = easygui.fileopenbox(multiple=True)
 
-base_open = easygui.fileopenbox()
+# base_open = easygui.fileopenbox()
 
 
 
@@ -23,30 +23,30 @@ base_open = easygui.fileopenbox()
 itens = ('ID','N° Ordem','Unidade','Pavimento','Requisição','')
 dados = ('00','1234','Santana','T','Trocar Janela quebrada','')
 
-base = pd.read_excel(base_open,engine='openpyxl')
-head_file = list(base)
+# base = pd.read_excel(base_open,engine='openpyxl')
+# head_file = list(base)
 
-index  = len(base.index)
-itens = head_file
-dados = []
+# index  = len(base.index)
+# itens = head_file
+# dados = []
 
-# for i in range(index)
+# # for i in range(index)
 
-for i in range(len(itens)):
-    if  head_file[i] == ('Observações'):
-        obs = (str(base.iloc[0][i]))
-        itens.remove('Observações')
-    elif head_file[i] == ('N°  Ordem'):
-        name_file = (str(base.iloc[0][i]))
-        dados.append(str(base.iloc[0][i]))
-    else:
-        dados.append(str(base.iloc[0][i]))
-
-
+# for i in range(len(itens)):
+#     if  head_file[i] == ('Observações'):
+#         obs = (str(base.iloc[0][i]))
+#         itens.remove('Observações')
+#     elif head_file[i] == ('N°  Ordem'):
+#         name_file = (str(base.iloc[0][i]))
+#         dados.append(str(base.iloc[0][i]))
+#     else:
+#         dados.append(str(base.iloc[0][i]))
 
 
 
 
+
+obs = 'Teste'
 
 
 
@@ -67,17 +67,19 @@ pdf.add_page()
 ''' Linha lateral'''
 pdf.set_line_width(5)
 pdf.set_draw_color(0,45,0)
-pdf.line(10, 10, 10, 290)
+pdf.line(10, 50, 10, 290)
 
 ''' Header '''
+pdf.image(files[0],5,10,w=25,h=20)
+
 pdf.set_title('TEST')
 pdf.set_font('Arial', 'B', 20)
-pdf.cell(12)
+pdf.cell(50)
 pdf.cell(50, 10, 'Relatório - Ordem de Serviço')
 pdf.ln(15)
-pdf.set_line_width(1)
-pdf.set_draw_color(0,0,0)
-pdf.line(20, 19, 125, 19)
+# pdf.set_line_width(1)
+# pdf.set_draw_color(0,0,0)
+# pdf.line(20, 19, 125, 19)
 
 c = 0
 
@@ -160,7 +162,7 @@ for img in files:
         x+=1
         p+=145
         if  cont != test:
-            print ('Break\n')
+            print ('PageBreak\n')
             pdf.add_page()
             p = pdf.get_y()+30
             cont+=1
@@ -177,4 +179,4 @@ for img in files:
 footer(pdf)
 
 
-pdf.output(f'{name_file}.pdf', 'F')
+pdf.output(f'teste_r.pdf', 'F')
