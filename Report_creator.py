@@ -173,7 +173,7 @@ class Ui(QtWidgets.QMainWindow):
         pdf.cell(150)
         pdf.cell(10, 12, 'N° ')
         pdf.cell(50, 12, 'xxxx-xxx-xx ')
-        pdf.ln(-5)
+        pdf.ln(20)
         # pdf.set_line_width(1)
         # pdf.set_draw_color(0,0,0)
         # pdf.line(20, 19, 125, 19)
@@ -200,44 +200,46 @@ class Ui(QtWidgets.QMainWindow):
         #INFORMAÇÕES INICIAIS
         pdf.set_font('Arial', 'B', 16)
         p = pdf.get_y()+10
+        print(p)
         pdf.cell(12)
-        pdf.cell(50, p, f'Unidade Requisitante: ',1)
+        pdf.cell(40, 10, f'Unidade')
         
         es = pdf.get_x()+3
         pdf.set_font('Arial', 'I', 12)
-        pdf.cell(55, p, 'TETSTSTS')
+        pdf.cell(100, 10, 'Unidade de Saude Nossa martinha')
         
         es = pdf.get_x()+10
         pdf.set_font('Arial', 'B', 16)
-        pdf.cell(40, p, 'Data: ')
+        pdf.cell(20, 10, 'Data: ')
         
         es = pdf.get_x()-20
         pdf.set_font('Arial', 'I', 12)
-        pdf.cell(0, p, '20212021')
+        pdf.cell(0, 10, '20212021')
         
+        pdf.ln(8)
+        pdf.cell(12)
+        pdf.set_font('Arial', 'B', 16)
+        pdf.cell(0,10, 'Requisitante: ')
         
-        pdf.ln(12)
-        
-        
-        
-        
+        pdf.ln(20)
+     
         for inf in itens:
             pdf.set_font('Arial', 'B', 16)
             
-            p = pdf.get_y()+10
+            p = pdf.get_y()
             pdf.cell(12)
-            pdf.cell(50, p, f'{inf}: ')
+            pdf.cell(50, 0, f'{inf}: ')
             es = pdf.get_x()+3
             pdf.set_font('Arial', 'I', 12)
-            pdf.cell(es, p, dados[c])
+            pdf.cell(50, 0, dados[c])
             pdf.ln(10)
             c+=1
             
-        pdf.ln(55)
+        pdf.ln(10)
         p = pdf.get_y()+10
         pdf.cell(12)
         pdf.set_font('Arial', 'B', 16)
-        pdf.cell(50,2, 'Observações',ln=True)
+        pdf.cell(50,6, 'Observações',ln=True)
         
         #linha observação
         # p = pdf.get_y()+50
