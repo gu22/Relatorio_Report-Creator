@@ -236,12 +236,12 @@
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionConfigura_es"/>
+    <addaction name="menuConfig"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionConfigura_es">
+  <action name="menuConfig">
    <property name="text">
     <string>Configurações</string>
    </property>

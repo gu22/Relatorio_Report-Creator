@@ -12,7 +12,9 @@ import pandas as pd
 from unidecode import unidecode
 
 from PyQt5 import QtWidgets, uic
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 import sys
+import os
 
 
 
@@ -34,10 +36,11 @@ class Ui(QtWidgets.QMainWindow):
         self.Barimagens.setValue(0)
         
         
+        self.Bdados.clicked.connect(self.open_dados)
         self.Bimagens.clicked.connect(self.open_imagens)
         self.Bemissao.clicked.connect(self.r_emissao)
         
-        
+        self.menuConfig.triggered.connect(self.pp)
         
         self.show()
         
@@ -45,11 +48,19 @@ class Ui(QtWidgets.QMainWindow):
 
 
 
-
+    def pp(self):
+        # print ('OK')
+        msgBox = QMessageBox()
+        msgBox.setText("Para editar as configurações, por favor, utilize o bloco de notas/Notepad")
+        msgBox.exec()
+        os.system('tt.txt')
 
 
     def open_dados(self):
-        pass
+        global base_open
+        base_open = easygui.fileopenbox()
+        self.Status_dados.setText('Dados OK')
+        self.Bardados.setValue(100)
 
     def open_imagens(self):
         global files
@@ -61,7 +72,7 @@ class Ui(QtWidgets.QMainWindow):
 
 
     def r_emissao(self):
-        global files
+        global files , base_open
         
         ''' GUI para leitura de arquivo '''
         
