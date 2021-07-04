@@ -12,6 +12,7 @@ import pandas as pd
 
 
 from PyQt5 import QtWidgets, uic
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 import sys
 import os
@@ -44,6 +45,7 @@ rodape = default['Informacao_rodape']
 
 
 formats = ['PNG','png','JPEG','jpge','JPG','jpg']
+iformats = ['*.PNG','*.png','*.JPEG','*.jpge','*.JPG','*.jpg']
 
 '''GUI Otimizada para  Usuario'''
 
@@ -59,6 +61,7 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi('.\Config\Main.ui', self)
         
         self.setFixedSize(316, 357)
+        self.setWindowIcon(QtGui.QIcon('.\Config\Icon.ico'))
         
         self.Status_dados.setText('')
         self.Status_imagens.setText('')
@@ -113,7 +116,7 @@ class Ui(QtWidgets.QMainWindow):
     def open_dados(self):
         global base_open
         
-        base_open = easygui.fileopenbox()
+        base_open = easygui.fileopenbox(msg="Selecione a planilha",title='Seleção do Dados',default='*.xlsx',filetypes=('*.xlsx','*.xls'))
         if base_open:
            
             self.Status_dados.setText('Dados OK')
@@ -144,7 +147,7 @@ class Ui(QtWidgets.QMainWindow):
     def r_emissao(self):
         global files , base_open,r,g,b,H_logo,W_logo,titulo, subtitulo, subtitulo_2n,list_range
         global formats, rodape,index,head_file,itens,input_user,data,logo,logo_onoffi,logo_onoffr
-        
+        global iformats
         # files = easygui.fileopenbox(msg="Selcione as imagens",title='Seleção de Imagens',multiple=True)
         if not base_open:
             msgBox = QMessageBox()
@@ -205,21 +208,19 @@ class Ui(QtWidgets.QMainWindow):
         
         # # for i in range(index)
         
-        
+        c = 1
         for n in list_range:
             dados = []
             head_file = list(base)
             
             itens = head_file
             
-            files = easygui.fileopenbox(msg="Selcione as imagens",title='Seleção de Imagens',multiple=True)
+            files = easygui.fileopenbox(msg=f"Selecione as imagens - {c}°Relatorio ",title='Seleção de Imagens',multiple=True,filetypes=iformats)
             if not files:
                 msgBox = QMessageBox()
-                msgBox.setText("Sem arquivo, selecione e tente novamente")
+                msgBox.setText("Imagem não foi selecionada, necessario recomeçar o processo")
                 msgBox.exec()
-                self.Status_dados.setText('Sem Arquivo')
-                self.Bardados.setValue(100)
-                self.Bardados.setStyleSheet("QProgressBar::chunk ""{""background-color: red;""}")
+                
                 return
             
             for i in range(len(itens)):
@@ -437,6 +438,7 @@ class Ui(QtWidgets.QMainWindow):
             pdf.output(name_file, 'F')
             self.Status_emissao.setText(f'Emissão {n}/{len(list_range)}')
             files=[]
+            c+=1
             
             
             
