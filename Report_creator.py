@@ -9,7 +9,7 @@ from fpdf import FPDF
 import easygui
 import math
 import pandas as pd
-from unidecode import unidecode
+
 
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
@@ -33,6 +33,9 @@ r,g,b = rgb[0],rgb[1],rgb[2]
 H_logo = int(design['Logo_altura'])
 W_logo = int(design['Logo_comprimento'])
 logo = design['Imagem_logo']
+logo_onoffi = int(design['Logo_relatorio'])
+logo_onoffr = int(design['Logo_relatorio_imagem'])
+
 
 titulo = (default['Titulo'])
 subtitulo = (default['Subtitulo'])
@@ -140,7 +143,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def r_emissao(self):
         global files , base_open,r,g,b,H_logo,W_logo,titulo, subtitulo, subtitulo_2n,list_range
-        global formats, rodape,index,head_file,itens,input_user,data,logo
+        global formats, rodape,index,head_file,itens,input_user,data,logo,logo_onoffi,logo_onoffr
         
         # files = easygui.fileopenbox(msg="Selcione as imagens",title='Seleção de Imagens',multiple=True)
         if not base_open:
@@ -273,7 +276,8 @@ class Ui(QtWidgets.QMainWindow):
             pdf.line(10, 50, 10, 290)
             
             ''' Header '''
-            pdf.image(logo,5,10,w=W_logo,h=H_logo)
+            if logo_onoffr ==1:
+                pdf.image(logo,5,10,w=W_logo,h=H_logo)
             
             pdf.set_title('Report')
             pdf.set_font('Arial', 'B', 20)
@@ -308,7 +312,7 @@ class Ui(QtWidgets.QMainWindow):
                     # Page number
                     self.cell(0, 0, 'Página ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
                     self.ln(5)
-                    self.cell(0, 0, 'rodape',0,0,'C')
+                    self.cell(0, 0, rodape,0,0,'C')
             
             # pdf.cell(0,)
             
@@ -383,7 +387,9 @@ class Ui(QtWidgets.QMainWindow):
             
             
             pdf.add_page()
-            pdf.image(logo,5,10,w=W_logo,h=H_logo)
+            
+            if logo_onoffi == 1:
+                pdf.image(logo,5,10,w=W_logo,h=H_logo)
             
             
             # pdf.ln(10)
@@ -400,7 +406,7 @@ class Ui(QtWidgets.QMainWindow):
             test = len(files)
             
             play = math.ceil(test/2)
-            
+            pdf.ln(5)
             for img in files:
                 # p = pdf.get_y()+80
                 verificador = x%2
