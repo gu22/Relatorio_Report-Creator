@@ -15,12 +15,13 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
 import sys
 import os
+from datetime import datetime
 
 import configparser
 
 
 config = configparser.ConfigParser()
-config.read('Config.ini')
+config.read('.\Config\Config.ini')
 design = config['design']
 default = config['DEFAULT']
 
@@ -31,18 +32,20 @@ r,g,b = rgb[0],rgb[1],rgb[2]
 
 H_logo = int(design['Logo_altura'])
 W_logo = int(design['Logo_comprimento'])
+logo = design['Imagem_logo']
 
 titulo = (default['Titulo'])
 subtitulo = (default['Subtitulo'])
 subtitulo_2n = (default['Subnivel_2'])
-
+rodape = default['Informacao_rodape']
 
 
 formats = ['PNG','png','JPEG','jpge','JPG','jpg']
 
 '''GUI Otimizada para  Usuario'''
 
-files=[]
+files= None
+base_open= None
 class Ui(QtWidgets.QMainWindow):
     
     ''' Variaveis Globais '''
@@ -50,7 +53,7 @@ class Ui(QtWidgets.QMainWindow):
     
     def __init__(self):
         super(Ui, self).__init__()
-        uic.loadUi('Main.ui', self)
+        uic.loadUi('.\Config\Main.ui', self)
         
         self.setFixedSize(316, 357)
         
@@ -101,7 +104,7 @@ class Ui(QtWidgets.QMainWindow):
         msgBox = QMessageBox()
         msgBox.setText("Para editar as configurações, por favor, utilize o bloco de notas/Notepad")
         msgBox.exec()
-        os.system('tt.txt')
+        os.system('.\Config\Config.ini')
 
 
     def open_dados(self):
@@ -109,7 +112,7 @@ class Ui(QtWidgets.QMainWindow):
         
         base_open = easygui.fileopenbox()
         if base_open:
-            base_open = easygui.fileopenbox()
+           
             self.Status_dados.setText('Dados OK')
             self.Bardados.setValue(100)
             self.Bardados.setStyleSheet("QProgressBar::chunk ""{""background-color: green;""}")
@@ -137,18 +140,30 @@ class Ui(QtWidgets.QMainWindow):
 
     def r_emissao(self):
         global files , base_open,r,g,b,H_logo,W_logo,titulo, subtitulo, subtitulo_2n,list_range
-        global formats
+        global formats, rodape,index,head_file,itens,input_user,data,logo
         
-        if not files:
+        # files = easygui.fileopenbox(msg="Selcione as imagens",title='Seleção de Imagens',multiple=True)
+        if not base_open:
             msgBox = QMessageBox()
             msgBox.setText("Sem arquivo, selecione e tente novamente")
             msgBox.exec()
             self.Status_dados.setText('Sem Arquivo')
             self.Bardados.setValue(100)
             self.Bardados.setStyleSheet("QProgressBar::chunk ""{""background-color: red;""}")
-            
-        else:
-            pass
+            return
+               
+    
+        
+        for u in range(1):
+            if self.Snao.isChecked() or self.Ssim.isChecked():
+                pass
+            else: 
+                msgBox = QMessageBox()
+                msgBox.setText('Selecionar todas as linhas (SIM) ou definir range/linhas (NÃO)')
+                msgBox.exec()
+                self.Status_emissao.setText('Selecionar Opções acima')
+                return
+        
             
         
         
@@ -156,12 +171,12 @@ class Ui(QtWidgets.QMainWindow):
         
         # base_open = easygui.fileopenbox()
         
+        
+        
         base = pd.read_excel(base_open,engine='openpyxl')
-        head_file = list(base)
         
         index  = len(base.index)
-        itens = head_file
-        
+        print('Iniciando processos')
         
         '''Tratando entrada do usuario sobre emissao'''
         
@@ -176,41 +191,60 @@ class Ui(QtWidgets.QMainWindow):
                 input_user = (input_user).split(';')
                 list_range = [(int(x)-2) for x in input_user]
             else:
-                list_range.append(int(list_range))
+                list_range.append(int(input_user)-2)
         else:
             list_range = range(index)
         
         '''Leitura dos Arquivos'''
         
-        itens = ('ID','N° Ordem','Unidade','Pavimento','Requisição','')
-        dados = ('00','1234','Santana','T','Trocar Janela quebrada','')
+        # itens = ('ID','N° Ordem','Unidade','Pavimento','Requisição','')
+        # dados = ('00','1234','Santana','T','Trocar Janela quebrada','')
         
         # # for i in range(index)
         
-        dados = []
         
         for n in list_range:
-        
+            dados = []
+            head_file = list(base)
+            
+            itens = head_file
+            
+            files = easygui.fileopenbox(msg="Selcione as imagens",title='Seleção de Imagens',multiple=True)
+            if not files:
+                msgBox = QMessageBox()
+                msgBox.setText("Sem arquivo, selecione e tente novamente")
+                msgBox.exec()
+                self.Status_dados.setText('Sem Arquivo')
+                self.Bardados.setValue(100)
+                self.Bardados.setStyleSheet("QProgressBar::chunk ""{""background-color: red;""}")
+                return
+            
             for i in range(len(itens)):
                 if  head_file[i] == ('Observações'):
                     obs = (str(base.iloc[n][i]))
-                    itens.remove('Observações')
                 elif head_file[i] == ('N°'):
                     n_chamado = (str(base.iloc[n][i]))
-                    itens.remove('N°')
                 elif head_file[i] == ('Data'):
                     data = (str(base.iloc[n][i]))
-                    itens.remove('Data')
                 elif head_file[i] == ('Unidade'):
                     unidade = (str(base.iloc[n][i]))
-                    itens.remove('Unidade')
                 else:
                     dados.append(str(base.iloc[n][i]))
             
+            itens.remove('Unidade')
+            itens.remove('Data')
+            itens.remove('N°')
+            itens.remove('Observações')
             
-            
-            
+            try:
+                datab = (data.split(' '))[0]
+                
+                datab = datetime.strptime(datab, "%Y-%m-%d").strftime("%d/%m/%Y")
+                data = datab
+            except:
+                pass
                  
+        
                 
             
             
@@ -239,7 +273,7 @@ class Ui(QtWidgets.QMainWindow):
             pdf.line(10, 50, 10, 290)
             
             ''' Header '''
-            pdf.image(files[0],5,10,w=W_logo,h=H_logo)
+            pdf.image(logo,5,10,w=W_logo,h=H_logo)
             
             pdf.set_title('Report')
             pdf.set_font('Arial', 'B', 20)
@@ -274,7 +308,7 @@ class Ui(QtWidgets.QMainWindow):
                     # Page number
                     self.cell(0, 0, 'Página ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
                     self.ln(5)
-                    self.cell(0, 0, 'BBXYBXYUBXYBXYUBXU',0,0,'C')
+                    self.cell(0, 0, 'rodape',0,0,'C')
             
             # pdf.cell(0,)
             
@@ -349,7 +383,7 @@ class Ui(QtWidgets.QMainWindow):
             
             
             pdf.add_page()
-            pdf.image(files[0],5,10,w=W_logo,h=H_logo)
+            pdf.image(logo,5,10,w=W_logo,h=H_logo)
             
             
             # pdf.ln(10)
@@ -393,16 +427,19 @@ class Ui(QtWidgets.QMainWindow):
                     
             footer(pdf)
             
-            name_file = (f'{unidade} - -{n_chamado}.pdf')
+            name_file = (f'{unidade} - {n_chamado}.pdf')
             pdf.output(name_file, 'F')
+            self.Status_emissao.setText(f'Emissão {n}/{len(list_range)}')
+            files=[]
             
             
             
-        self.Status_dados.setText('')
+            
+        # self.Status_dados.setText('')
         self.Status_imagens.setText('')
         self.Status_emissao.setText('Emissão Concluida')
         
-        self.Bardados.setValue(0)
+        # self.Bardados.setValue(0)
         self.Barimagens.setValue(0)
             
 

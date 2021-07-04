@@ -31,6 +31,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="Bimagens">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -130,6 +133,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="Status_imagens">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -180,9 +186,9 @@
    <widget class="QLabel" name="Status_emissao">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>80</x>
       <y>280</y>
-      <width>111</width>
+      <width>151</width>
       <height>20</height>
      </rect>
     </property>
@@ -200,13 +206,16 @@
      </rect>
     </property>
     <property name="value">
-     <number>24</number>
+     <number>0</number>
     </property>
     <property name="textVisible">
      <bool>false</bool>
     </property>
    </widget>
    <widget class="QProgressBar" name="Barimagens">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -216,7 +225,7 @@
      </rect>
     </property>
     <property name="value">
-     <number>24</number>
+     <number>0</number>
     </property>
     <property name="textVisible">
      <bool>false</bool>
